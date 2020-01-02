@@ -1,0 +1,151 @@
+<div  class="content-wrapper">
+    <div [formGroup]="pageData.formGroup">
+      <div class="card mt-4">
+        <h2 class="card-header">New Loan</h2>
+        <div class="card-body">
+          <div class="row page-row align-items-start justify-content-start">
+            <div class="col-3">
+              <label>Amount</label>
+              <input [ngClass]="{'is-invalid': amount.touched && amount.invalid}" class="form-control"
+                     formControlName="amount"
+                     type="text" maxlength="10" (keypress)="numberOnly($event);">
+              <span *ngIf="amount.touched && amount.invalid" class="text-danger">This field is required</span>
+            </div>
+            <div class="col-2">
+              <label>Interest Rate</label>
+              <select [ngClass]="{'is-invalid': interestRate.invalid && interestRate.touched}" class="form-control"
+                      formControlName="interestRate">
+                <option hidden selected value="">Select</option>
+                <option *ngFor="let opt of interestRateOptions" [value]="opt" >{{opt}}</option>
+              </select>
+             <span *ngIf="interestRate.invalid && interestRate.touched"
+                    class="text-danger">This field is required</span>
+            </div>
+          </div>
+
+          <div class="card mt-4">
+            <h5 class="card-header">Address Details </h5>
+            <div class="card-body">
+
+              <div class="row page-row">
+                <div class="col-3">
+                  <label>Loaner Name</label>
+                  <input [ngClass]="{'is-invalid': name.touched && name.invalid}" class="form-control"
+                         formControlName="name"
+                         type="text" maxlength="20">
+                  <span *ngIf="name.touched && name.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-3">
+                  <label>Last Name</label>
+                  <input [ngClass]="{'is-invalid': lastName.touched && lastName.invalid}" class="form-control"
+                         formControlName="lastName"
+                         type="text" maxlength="20">
+                  <span *ngIf="lastName.touched && lastName.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-3">
+                  <label>Phone Number</label>
+                  <input [ngClass]="{'is-invalid': phoneNo.touched && phoneNo.invalid}" class="form-control"
+                         formControlName="phoneNo"
+                         type="text" maxlength="20">
+                  <span *ngIf="phoneNo.touched && phoneNo.invalid" class="text-danger">This field is required</span>
+                </div>
+              </div>
+
+              <div class="row page-row">
+                <div class="col-3">
+                   <label>Place</label>
+                    <input [ngClass]="{'is-invalid': place.touched && place.invalid}" class="form-control"
+                           formControlName="place"
+                           type="text" maxlength="10">
+                  <span *ngIf="place.touched && place.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-3">
+                   <label>Street Name</label>
+                    <input [ngClass]="{'is-invalid': streetName.touched && streetName.invalid}" class="form-control"
+                           formControlName="streetName"
+                           type="text" maxlength="10">
+                    <span *ngIf="streetName.touched && streetName.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-5">
+                    <label>Address Description</label>
+                    <input [ngClass]="{'is-invalid': addressDesc.touched && addressDesc.invalid}" class="form-control"
+                           formControlName="addressDesc"
+                           type="text" maxlength="10">
+                    <span *ngIf="addressDesc.touched && addressDesc.invalid" class="text-danger">This field is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-4">
+            <h5 class="card-header">Loan Item Details </h5>
+            <div class="card-body">
+              <div class="row page-row align-items-start">
+                <div class="col-3">
+                    <label>Items</label>
+                    <textarea [ngClass]="{'is-invalid': itemDetails.touched && itemDetails.invalid}"
+                              class="form-control" formControlName="itemDetails" maxlength="100"> </textarea>
+                    <span *ngIf="itemDetails.touched && itemDetails.invalid" class="text-danger">This field is required</span>
+                  </div>
+                <div class="col-2">
+
+                    <label>Net weight</label>
+                    <input [ngClass]="{'is-invalid': netWeight.touched && netWeight.invalid}" class="form-control"
+                           formControlName="netWeight" c
+                           type="text" maxlength="10">
+
+                  <span *ngIf="netWeight.touched && netWeight.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-5">
+
+                    <label>item Description</label>
+                    <input [ngClass]="{'is-invalid': itemDesc.touched && itemDesc.invalid}" class="form-control"
+                           formControlName="itemDesc"
+                           type="text" maxlength="10">
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <br>
+
+
+
+  <div class="modal fade custom-modal-font" tabindex="-1" role="dialog" id="confirmCancelModal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header alert-warning">
+          Caution
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          All of the information entered will be lost. Do you wish to proceed?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No - Stay & submit</button>
+          <button type="button" class="btn btn-primary">Yes - cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <button type="button" class="btn btn-secondary" (click)="cancel()">cancel</button>
+  &nbsp;&nbsp;
+    <button type="button" class="btn btn-primary">submit</button>
+
+
+    </div>
+
+

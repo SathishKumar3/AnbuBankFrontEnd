@@ -1,0 +1,188 @@
+<div class="content-wrapper">
+  <div [formGroup]="pageData.formGroup">
+    <div class="card mt-4">
+      <h2 class="card-header">Return Loan</h2>
+      <div class="card-body">
+        <div formArrayName="loanNumbers">
+          <h5>Loan Numbers:
+            <button (click)="addLoanNo()" class="btn btn-primary">
+              <span appOcticon octicon="plus"></span>
+            </button>
+          </h5>
+          <div class="row align-items-start justify-content-start">
+            <table>
+              <div *ngFor="let loanNo of loanNumbers.controls; let i = index;">
+                <td class="align-row entry input-group">
+                  &nbsp;&nbsp;
+                  <input [formControlName]="i" [ngClass]="{'is-invalid': loanNumbers.controls[i].touched &&
+                     loanNumbers.controls[i].invalid}" class="form-control " maxlength="6" size="10" type="text">
+                  <div *ngIf="i+1 <= loanNumbers.controls.length" class="input-group-append">
+                    <button (click)="removeInsured(i)" class="btn">
+                      <span appOcticon octicon="trashcan"></span>
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <span *ngIf="loanNumbers.controls[i].touched && loanNumbers.controls[i].invalid"
+                        class="align-row text-danger">This field is required</span>
+                </td>
+                <td><br></td>
+              </div>
+            </table>
+          </div>
+        </div>
+
+        <button (click)="calculate()" class="btn btn-primary" type="button">calculate</button>
+
+        <div *ngIf="this.loanDetails.length > 0">
+          <div class="card mt-4">
+            <h5 class="card-header">Loan Return Details </h5>
+            <div formArrayName="loanDetails">
+              <br>
+              <table class="table-row">
+                <th width="2%"></th>
+                <th width="10%">Loan No</th>
+                <th width="10%">Amount</th>
+                <th width="10%">Calculated Interest</th>
+                <th width="15%">Received Interest</th>
+                <th width="5%">Total Amt</th>
+                <th width="50%"></th>
+
+                <tr *ngFor="let item of loanDetails.controls; let i=index" [formGroupName]="i">
+                  <td></td>
+                  <td>
+
+                    <a href="javascript:void(0);" (click)="viewLoan(loanDetails.controls[i].value);">
+                      {{loanDetails.controls[i].get('loanNo').value}} </a>
+                  </td>
+                  <td>
+                    {{loanDetails.controls[i].get('amount').value}}
+                  </td>
+                  <td>
+                    {{loanDetails.controls[i].get('calculatedInterest').value}}
+                  </td>
+                  <td>
+                    <input (blur)="interestPlusPrincipal()" class="form-control col-5" formControlName="receivedInterest"
+                           maxlength="5" type="text">
+                    <span *ngIf="loanDetails.controls[i].get('receivedInterest').touched &&
+                                                        loanDetails.controls[i].get('receivedInterest').invalid "
+                          class="text-danger">This field is required</span>
+                  </td>
+                  <td>
+                    {{loanDetails.controls[i].get('totalAmt').value}}
+
+                  </td>
+                  <td>
+                    <button (click)="removeLoanDetails(i)" class="btn">
+                      <span appOcticon octicon="trashcan"></span>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <br>
+            </div>
+            <div>
+              <strong>
+                &nbsp;&nbsp;&nbsp;&nbsp; TotalAmount : {{totalAmount}} </strong>
+            </div>
+            <br>
+            <div class="col-6">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input (change)="onChangeisLoaner($event.target.checked)" class="form-check-input" type="checkbox">
+                  Same as loaner
+                </label>
+              </div>
+            </div>
+
+            <div *ngIf="displayReturnerDeatils">
+              <br>
+              <div class="row page-row align-items-start">
+                <div class="col-auto">
+                </div>
+                <div class="col-3 ">
+                  <label>Returner Name</label>
+                  <input [ngClass]="{'is-invalid': rName.touched && rName.invalid}" class="form-control"
+                         formControlName="rName"
+                         maxlength="20" type="text">
+                  <span *ngIf="rName.touched && rName.invalid" class="text-danger">This field is required</span>
+                </div>
+
+                <div class="col-3">
+                  <label>Last Name</label>
+                  <input [ngClass]="{'is-invalid': rLastName.touched && rLastName.invalid}" class="form-control"
+                         formControlName="rLastName"
+                         maxlength="20" type="text">
+                  <span *ngIf="rLastName.touched && rLastName.invalid" class="text-danger">This field is required</span>
+                </div>
+                <div class="col-3">
+                  <label>Phone Number</label>
+                  <input [ngClass]="{'is-invalid': rPhoneNo.touched && rPhoneNo.invalid}" class="form-control"
+                         formControlName="rPhoneNo"
+                         maxlength="20" type="text">
+                  <span *ngIf="rPhoneNo.touched && rPhoneNo.invalid" class="text-danger">This field is required</span>
+                </div>
+              </div>
+              <div class="row page-row align-items-start">
+                <div class="col-auto">
+                </div>
+                <div class="col-3">
+                  <label>Place</label>
+                  <input [ngClass]="{'is-invalid': rPlace.touched && rPlace.invalid}" class="form-control"
+                         formControlName="rPlace"
+                         maxlength="10" type="text">
+                  <span *ngIf="rPlace.touched && rPlace.invalid" class="text-danger">This field is required</span>
+                </div>
+                <div class="col-3">
+                  <label>Street Name</label>
+                  <input [ngClass]="{'is-invalid': rStreetName.touched && rStreetName.invalid}" class="form-control"
+                         formControlName="rStreetName"
+                         maxlength="10" type="text">
+                  <span *ngIf="rStreetName.touched && rStreetName.invalid"
+                        class="text-danger">This field is required</span>
+                </div>
+                <div class="col-5">
+                  <label>Address Description</label>
+                  <input [ngClass]="{'is-invalid': rAddressDesc.touched && rAddressDesc.invalid}" class="form-control"
+                         formControlName="rAddressDesc"
+                         maxlength="10" type="text">
+                  <span *ngIf="rAddressDesc.touched && rAddressDesc.invalid"
+                        class="text-danger">This field is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div *ngIf="this.loanDetails.length > 0">
+      &nbsp;&nbsp;
+      <button (click)="returnLoan()" class="btn btn-primary" type="button">Return Loan</button>
+      &nbsp;&nbsp;
+      <button class="btn btn-secondary" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade custom-modal-font" tabindex="-1" role="dialog" id="viewModal" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        Loan Details
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="loanStuff"></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

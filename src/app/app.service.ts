@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
+import {ElementRef, Injectable} from "@angular/core";
 import {PageData} from "./page-data";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -20,7 +20,6 @@ export class AppService{
       formGroupName: 'loanForm',
       formGroup: this.getLoanFormGroup()
     },
-
     {
       route: '/return',
       formGroupName: 'returnForm',
@@ -29,10 +28,13 @@ export class AppService{
     {
       route: '/dailySheet',
       formGroupName: 'dailySheetForm',
-      formGroup: this.getHomeFormGroup()
+      formGroup: this.getDailySheetFormGroup()
+    },
+    {
+      route: '/search',
+      formGroupName: 'searchForm',
+      formGroup: this.getSearchFormGroup()
     }
-
-
   ];
 
   getHomeFormGroup(): FormGroup {
@@ -42,15 +44,28 @@ export class AppService{
 
   getDailySheetFormGroup(): FormGroup {
     return this.fb.group({
-      dateBound: ['']
+      selectedDate: ['']
     })
   }
 
-
-
+  getSearchFormGroup(): FormGroup {
+    return this.fb.group({
+      loanNo: [''],
+      amount:[''],
+      fromDate:[''],
+      toDate:[''],
+      loanerName:[''],
+      lastName:[''],
+      place:[''],
+      item:[''],
+      isReturned:[false]
+    })
+  }
 
   getLoanFormGroup(): FormGroup {
     return this.fb.group({
+      loanNo:[''],
+      loanDate:['',Validators.required],
       amount: ['',Validators.required],
       interestRate: ['',Validators.required],
       name: ['',Validators.required],
@@ -62,6 +77,7 @@ export class AppService{
       itemDetails: ['',Validators.required],
       netWeight: ['',Validators.required],
       itemDesc: [''],
+      loanerImg:['',Validators.required]
     })
   }
 
@@ -75,9 +91,8 @@ export class AppService{
           loanNo: [''],
           amount: [''],
           calculatedInterest: [''],
-          receivedInterest: ['',Validators.required],
-          totalAmt:[''],
-          viewLink:['']
+          receivedInterest: [''],
+          totalAmt:['']
         })
       ]),
 
@@ -109,6 +124,35 @@ export class AppService{
   getPageData(url: string): any {
     const pageDataFilter = this._pageData.filter(page => url === page.route);
     return pageDataFilter.length === 1 ? { ...pageDataFilter[0] } : null;
+  }
+
+
+
+  fieldValidation(el:ElementRef):void {
+    const invalidElements = el.nativeElement.querySelectorAll('input.ng-invalid,select.ng-invalid,span.ng-invalid');
+    if(invalidElements.length>0){
+      invalidElements[0].scrollIntoView({behavior: "smooth"});
+    }
+  }
+
+
+  /**
+   * Takes a FormGroup/Array and recursively sets all its controls to dirty
+   */
+  markControlsTouched(group: FormGroup | FormArray): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.controls[key];
+
+      if (abstractControl instanceof FormGroup || (abstractControl instanceof FormArray && abstractControl.length)) {
+        this.markControlsTouched(abstractControl);
+      } else {
+        abstractControl.markAsTouched();
+      }
+    });
+  }
+
+  scrollToItem(element : Element) : void {
+    element.scrollIntoView({behavior: "smooth"});
   }
 
 

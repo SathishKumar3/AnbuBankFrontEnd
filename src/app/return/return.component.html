@@ -150,6 +150,14 @@
                         class="text-danger">This field is required</span>
                 </div>
               </div>
+              <div class="row page-row">
+                <div class="align-card"><video #video id="video" width="150" height="150" autoplay></video></div>
+                &nbsp;&nbsp;
+                <div><button id="snap" type="button" class="btn btn-secondary"  (click)="capture()">Snap Photo</button>
+                </div>
+                &nbsp;&nbsp;          <div><canvas #canvas id="canvas" width="180" height="120"></canvas></div>
+
+              </div>
             </div>
           </div>
 
@@ -173,7 +181,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        Loan Details
+        <h4>Loan Details</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -185,4 +193,7 @@
     </div>
   </div>
 </div>
+
+
+
 

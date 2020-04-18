@@ -1,0 +1,110 @@
+<div class="content-wrapper">
+  <div [formGroup]="pageData.formGroup">
+    <div class="card mt-4">
+      <h2 class="card-header">Search</h2>
+      <div class="card-body">
+        <div class="row page-row">
+          <div class="col-3">
+            <label>Loaner Name</label>
+            <input class="form-control"
+                   formControlName="loanerName" [ngbTypeahead]="searchName"
+                   type="text" maxlength="20">
+          </div>
+          <div class="col-3">
+            <label>Last Name</label>
+            <input class="form-control"
+                   formControlName="lastName" [ngbTypeahead]="searchName"
+                   type="text" maxlength="20">
+          </div>
+          <div class="col-3">
+            <label>Place</label>
+            <input class="form-control"
+                   formControlName="place" [ngbTypeahead]="searchName"
+                   type="text" maxlength="20">
+          </div>
+          <div class="col-2">
+            <label>Amount</label>
+            <input [ngClass]="{'is-invalid': amount.touched && amount.invalid}" class="form-control"
+                   formControlName="amount"
+                   type="text" maxlength="10">
+          </div>
+          </div>
+
+        <div class="row page-row align-items-start">
+            <div class="col-2">
+              <label>From Date</label>
+              <div class="input-group" >
+                <input matInput [matDatepicker]="fromDateDP" class="form-control"
+                       formControlName="fromDate" placeholder="DD/MM/YYYY">
+                <mat-datepicker-toggle [for]="fromDateDP"></mat-datepicker-toggle>
+                <mat-datepicker  #fromDateDP></mat-datepicker>
+              </div>
+            </div>
+
+
+            <div class="col-2">
+              <label>To Date</label>
+              <div class="input-group" >
+                <input matInput [matDatepicker]="toDateDP" class="form-control"
+                       formControlName="toDate" placeholder="DD/MM/YYYY">
+                <mat-datepicker-toggle [for]="toDateDP"></mat-datepicker-toggle>
+                <mat-datepicker  #toDateDP></mat-datepicker>
+              </div>
+            </div>
+
+
+
+          <div class="col-3">
+            <label>Item</label>
+            <input class="form-control"
+                   formControlName="item" [ngbTypeahead]="searchName"
+                   type="text" maxlength="20">
+          </div>
+          <div class="col-2">
+            <label>Is Returned ? </label>
+            <select class="form-control"
+                    formControlName="isReturned">
+              <option hidden selected value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+
+          <button type="button" class="btn btn-primary" (click)="search()">Search</button>
+
+        <div *ngIf="searchDataSource.data.length > 0" >
+          <mat-table [dataSource]="searchDataSource" matSort>
+            <ng-container matColumnDef="loanNo">
+              <mat-header-cell class="table-header"  *matHeaderCellDef mat-sort-header>Loan No </mat-header-cell>
+              <mat-cell class="hyper-link"  *matCellDef="let data">  {{data.loanNo}}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.amount}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="loanerName">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Loaner Name</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.loanerName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="items">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Items</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.items}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="searchColumns"></mat-header-row>
+            <mat-row  *matRowDef="let row; columns: searchColumns;"></mat-row >
+          </mat-table>
+
+          <mat-paginator  #paginator
+                          [pageSize]="10"
+                          [pageSizeOptions]="[10, 30, 50]"
+                          [showFirstLastButtons]="true">
+          </mat-paginator>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

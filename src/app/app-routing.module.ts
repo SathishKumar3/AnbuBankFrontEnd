@@ -4,6 +4,7 @@ import {HomeComponent} from "./home/home.component";
 import {LoanComponent} from "./loan/loan.component";
 import {ReturnComponent} from "./return/return.component";
 import {DailysheetComponent} from "./dailySheet/dailysheet.component";
+import {SearchComponent} from "./search/search.component";
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'dailySheet',
     component: DailysheetComponent
+  },
+  {
+    path: 'search',
+    component: SearchComponent
   }
 ];
 

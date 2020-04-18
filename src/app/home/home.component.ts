@@ -37,4 +37,8 @@ export class HomeComponent implements OnInit {
     this.appService.routeNavigation(3);
   }
 
+  search(){
+    this.appService.routeNavigation(4);
+  }
+
 }

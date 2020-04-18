@@ -1,0 +1,25 @@
+.mat-row {
+  width: 40%;
+}
+
+.mat-header-row {
+  width: 40%;
+}
+
+
+.mat-row:nth-child(even){
+  background-color:gainsboro;
+}
+
+.mat-row:nth-child(odd){
+  background-color:white;
+}
+
+
+.table-header{
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: bolder;
+
+}
+

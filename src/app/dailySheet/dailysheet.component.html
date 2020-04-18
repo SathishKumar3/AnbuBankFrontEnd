@@ -4,14 +4,14 @@
       <h2 class="card-header">Daily Sheet</h2>
       <div class="card-body">
 
-        <h5>Daily Sheet Date</h5>
+        <h5>Date</h5>
         <div class="row page-row align-items-start">
-          <div class="col-6">
+          <div class="col-2">
             <div class="input-group" >
-              <input matInput [matDatepicker]="dateboundDP" class="form-control"
-                      formControlName="dateBound" placeholder="DD/MM/YYYY">
-              <mat-datepicker-toggle [for]="dateboundDP"></mat-datepicker-toggle>
-              <mat-datepicker  #dateboundDP></mat-datepicker>
+              <input matInput [matDatepicker]="dateDP" class="form-control"
+                      formControlName="selectedDate" (dateChange)="validateDate()"  placeholder="DD/MM/YYYY">
+              <mat-datepicker-toggle [for]="dateDP"></mat-datepicker-toggle>
+              <mat-datepicker  #dateDP></mat-datepicker>
             </div>
           </div>
         </div>
@@ -21,47 +21,97 @@
 <div class="accordion" id="accordionExample">
   <div class="card">
     <div class="card-header" id="headingOne">
-      <h2 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Collapsible Group Item #1
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
+                aria-controls="collapseOne">
+          Return details:
         </button>
-      </h2>
+        Count : {{this.returnData.count}} &nbsp;|
+        &nbsp;Total Amount : {{this.returnData.totalAmount}}&nbsp;|
+        &nbsp;Total Interest : {{this.returnData.totalInterest}}
+
+      </h5>
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
+        <div *ngIf="returnDataSource.data.length > 0" >
+          <mat-table [dataSource]="returnDataSource" matSort >
+            <ng-container matColumnDef="loanNo">
+              <mat-header-cell class="table-header"  *matHeaderCellDef mat-sort-header>Loan No </mat-header-cell>
+              <mat-cell class="hyper-link"  *matCellDef="let data">  {{data.loanNo}}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.amount}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="interest">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Interest</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.interest}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="returnColumns"></mat-header-row>
+            <mat-row  *matRowDef="let row; columns: returnColumns;"></mat-row >
+          </mat-table>
+
+          <mat-paginator  #paginator
+                          [pageSize]="10"
+                          [pageSizeOptions]="[10, 30, 50]"
+                          [showFirstLastButtons]="true">
+          </mat-paginator>
+        </div>
+
+
+        </div>
     </div>
   </div>
   <div class="card">
     <div class="card-header" id="headingTwo">
-      <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          Collapsible Group Item #2
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Loan details
         </button>
-      </h2>
+
+        Count : {{this.loanData.count}} &nbsp;|
+        &nbsp;Total Amount : {{this.loanData.totalAmount}}&nbsp;|
+        &nbsp;Total Interest : {{this.loanData.totalInterest}}&nbsp;|
+        &nbsp;Total Appraiser Fee : {{this.loanData.totalAppraiserFee}}
+
+      </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <div *ngIf="loanDataSource.data.length > 0" >
+          <mat-table [dataSource]="loanDataSource" matSort >
+            <ng-container matColumnDef="loanNo">
+              <mat-header-cell class="table-header"  *matHeaderCellDef mat-sort-header>Loan No </mat-header-cell>
+              <mat-cell class="hyper-link"  *matCellDef="let data">  {{data.loanNo}}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.amount}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="interest">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Interest</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.interest}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="appraiserFee">
+              <mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>Appraiser Fee</mat-header-cell>
+              <mat-cell *matCellDef="let data"> {{data.appraiserFee}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="loanColumns"></mat-header-row>
+            <mat-row  *matRowDef="let row; columns: loanColumns;"></mat-row >
+          </mat-table>
+
+          <mat-paginator  #paginator
+                          [pageSize]="10"
+                          [pageSizeOptions]="[10, 30, 50]"
+                          [showFirstLastButtons]="true">
+          </mat-paginator>
+        </div>
       </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-          Collapsible Group Item #3
-        </button>
-      </h2>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
+
 </div>
 
 
